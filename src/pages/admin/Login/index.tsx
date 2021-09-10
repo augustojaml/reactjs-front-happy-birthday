@@ -1,20 +1,49 @@
-import { Section } from './styled';
+import { FormEvent, useCallback, useState } from 'react';
 
 import heroImg from '../../../assets/hero.png';
 import logoImg from '../../../assets/logo-matraca.png';
 import { FiMail, FiInfo, FiUnlock } from 'react-icons/fi';
-import { useHistory } from 'react-router';
-import { FormEvent, useCallback } from 'react';
+import { api } from '../../../services/api';
+
+import { Section } from './styled';
+
+interface ErrorsData {
+  [key: string]: string;
+}
 
 export function Login() {
-  const history = useHistory();
+  //const history = useHistory();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [errors, setErrors] = useState<ErrorsData>({});
 
   const handleSubmit = useCallback(
-    (e: FormEvent<HTMLButtonElement>) => {
+    async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      history.push('dashboard');
+      api
+        .post('v1/login', {
+          email: email,
+          password: password,
+        })
+        .then((response) => {
+          console.log(response);
+          setErrors({});
+        })
+        .catch(function (error) {
+          if (!error.response) {
+            return;
+          }
+
+          let err: ErrorsData = {};
+
+          Object.keys(error.response.data.errors).forEach(function (key) {
+            err[key] = error.response.data.errors[key][0];
+          });
+
+          setErrors(err);
+        });
     },
-    [history]
+    [email, password]
   );
 
   return (
@@ -30,22 +59,38 @@ export function Login() {
               <FiMail />
               <span>E-mail</span>
             </header>
-            <input type='text' />
+            <input
+              type='text'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
             <div className='message'>
-              <FiInfo />
-              <span>You Error</span>
+              {errors.email && (
+                <>
+                  <FiInfo />
+                  <span>{errors.email}</span>
+                </>
+              )}
             </div>
           </div>
 
           <div className='input-group'>
             <header>
               <FiUnlock />
-              <span>E-mail</span>
+              <span>Password</span>
             </header>
-            <input type='text' />
+            <input
+              type='password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
             <div className='message'>
-              <FiInfo />
-              <span>You Error</span>
+              {errors.password && (
+                <>
+                  <FiInfo />
+                  <span>{errors.password}</span>
+                </>
+              )}
             </div>
 
             <button type='submit' onClick={handleSubmit}>
