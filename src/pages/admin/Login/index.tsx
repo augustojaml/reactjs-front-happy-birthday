@@ -3,47 +3,21 @@ import { FormEvent, useCallback, useState } from 'react';
 import heroImg from '../../../assets/hero.png';
 import logoImg from '../../../assets/logo-matraca.png';
 import { FiMail, FiInfo, FiUnlock } from 'react-icons/fi';
-import { api } from '../../../services/api';
 
 import { Section } from './styled';
-
-interface ErrorsData {
-  [key: string]: string;
-}
+import { useSession } from '../../../hooks/useSession';
 
 export function Login() {
-  //const history = useHistory();
+  const { errors, sessionLogin } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [errors, setErrors] = useState<ErrorsData>({});
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      api
-        .post('v1/login', {
-          email: email,
-          password: password,
-        })
-        .then((response) => {
-          console.log(response);
-          setErrors({});
-        })
-        .catch(function (error) {
-          if (!error.response) {
-            return;
-          }
-
-          let err: ErrorsData = {};
-
-          Object.keys(error.response.data.errors).forEach(function (key) {
-            err[key] = error.response.data.errors[key][0];
-          });
-
-          setErrors(err);
-        });
+      sessionLogin(email, password);
     },
-    [email, password]
+    [email, password, sessionLogin]
   );
 
   return (
