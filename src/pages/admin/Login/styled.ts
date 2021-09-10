@@ -7,12 +7,15 @@ export const Section = styled.section`
   grid-template-columns: 1fr 1fr;
   @media (max-width: 900px) {
     grid-template-columns: 1fr;
-    div.hero {
-      display: none;
-    }
   }
   div.hero {
     height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    @media (max-width: 900px) {
+      display: none;
+    }
     img {
       width: 100%;
     }
@@ -24,6 +27,7 @@ export const Section = styled.section`
     align-items: center;
     justify-content: center;
     flex-direction: column;
+    padding: 1.5rem;
     img {
       margin-bottom: 3rem;
     }
