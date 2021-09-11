@@ -8,16 +8,16 @@ import { Section } from './styled';
 import { useSession } from '../../../hooks/useSession';
 
 export function Login() {
-  const { errors, sessionLogin } = useSession();
+  const { errors, signIn } = useSession();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      sessionLogin(email, password);
+      signIn(email, password);
     },
-    [email, password, sessionLogin]
+    [email, password, signIn]
   );
 
   return (

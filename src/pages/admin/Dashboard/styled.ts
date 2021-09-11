@@ -78,16 +78,17 @@ export const Dash = styled.div`
         margin-top: 1rem;
         tbody {
           tr {
-            border: 0;
-            display: block;
-            margin: 0.5rem 0;
-            border-radius: 8px;
-            background: var(--white);
-            color: var(--form-color);
+            background: RED;
             td {
               background: var(--white);
+              color: var(--form-color);
               padding: 0.5rem;
-              width: 100%;
+              &:first-child {
+                border-radius: 0.25rem 0 0 0.25rem;
+              }
+              &:last-child {
+                border-radius: 0 0.25rem 0.25rem 0;
+              }
             }
           }
         }
