@@ -1,6 +1,4 @@
-import { Container, ContentForm, ContentInfo, Section } from './styled';
-import LogoImg from '../../../assets/logo.png';
-import { AiFillHome } from 'react-icons/ai';
+import { FormEvent, useCallback, useState } from 'react';
 import {
   FiCalendar,
   FiHash,
@@ -9,16 +7,33 @@ import {
   FiUserCheck,
 } from 'react-icons/fi';
 import { AiOutlineWhatsApp } from 'react-icons/ai';
-import { FormEvent } from 'react';
-import { useHistory } from 'react-router';
 
+import { Container, ContentForm, ContentInfo, Section } from './styled';
+import LogoImg from '../../../assets/logo.png';
+import { AiFillHome } from 'react-icons/ai';
+import { useVoucher } from '../../../hooks/useVoucher';
 export function Form() {
-  const history = useHistory();
+  const { sendVoucher } = useVoucher();
 
-  function handleSubmit(e: FormEvent<HTMLButtonElement>) {
-    e.preventDefault();
-    history.push('congratulations');
-  }
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [whatsapp, setWhatsapp] = useState('');
+  const [date_of_birth, setDate_of_birth] = useState('');
+  const [how_did_you_find_us, setHow_did_you_find_us] = useState('');
+
+  const handleSubmit = useCallback(
+    async (e: FormEvent<HTMLButtonElement>) => {
+      e.preventDefault();
+      sendVoucher({
+        name,
+        email,
+        whatsapp,
+        date_of_birth,
+        how_did_you_find_us,
+      });
+    },
+    [date_of_birth, email, how_did_you_find_us, name, sendVoucher, whatsapp]
+  );
 
   return (
     <>
@@ -68,7 +83,13 @@ export function Form() {
                     <div className='icon'>
                       <FiUserCheck />
                     </div>
-                    <input type='text' name='name' placeholder='Nome' />
+                    <input
+                      type='text'
+                      name='name'
+                      placeholder='Nome'
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
+                    />
                   </div>
                   <div className='message'>
                     <FiInfo />
@@ -81,7 +102,13 @@ export function Form() {
                     <div className='icon'>
                       <FiMail />
                     </div>
-                    <input type='text' name='name' placeholder='E-mail' />
+                    <input
+                      type='text'
+                      name='email'
+                      placeholder='E-mail'
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </div>
                   <div className='message'>
                     <FiInfo />
@@ -95,7 +122,13 @@ export function Form() {
                       <div className='icon'>
                         <AiOutlineWhatsApp />
                       </div>
-                      <input type='text' name='name' placeholder='WhatsApp' />
+                      <input
+                        type='text'
+                        name='whatsapp'
+                        placeholder='WhatsApp'
+                        value={whatsapp}
+                        onChange={(e) => setWhatsapp(e.target.value)}
+                      />
                     </div>
                     <div className='message'>
                       <FiInfo />
@@ -108,7 +141,13 @@ export function Form() {
                       <div className='icon'>
                         <FiCalendar />
                       </div>
-                      <input type='text' name='name' placeholder='Data Nasc' />
+                      <input
+                        type='text'
+                        name='date_of_birth'
+                        placeholder='Nasc Date'
+                        value={date_of_birth}
+                        onChange={(e) => setDate_of_birth(e.target.value)}
+                      />
                     </div>
                     <div className='message'>
                       <FiInfo />
@@ -122,13 +161,18 @@ export function Form() {
                     <div className='icon'>
                       <FiHash />
                     </div>
-                    <select name='cars' id='cars'>
+                    <select
+                      name='how_did_you_find_us'
+                      id='cars'
+                      value={how_did_you_find_us}
+                      onChange={(e) => setHow_did_you_find_us(e.target.value)}
+                    >
                       <option value=''>Como nos conheceu</option>
-                      <option value='Facebook'>Facebook</option>
-                      <option value='Google'>Google</option>
-                      <option value='Instagram'>Instagram</option>
-                      <option value='Site'>Site</option>
-                      <option value='Outros'>Outros</option>
+                      <option value='facebook'>Facebook</option>
+                      <option value='google'>Google</option>
+                      <option value='instagram'>Instagram</option>
+                      <option value='site'>Site</option>
+                      <option value='outros'>Outros</option>
                     </select>
                   </div>
                   <div className='message'>
