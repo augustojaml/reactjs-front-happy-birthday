@@ -12,15 +12,15 @@ application in ReacJS using the API [Laravel Happy Birthday](https://github.com/
 
 # Congratulations Page
 
-![Congratulations](./congratulations.png)
+![Congratulations](./congratulations-page.png)
 
 # Admin Page
 
-![Congratulations](./admin.png)
+![Congratulations](./admin-page.png)
 
 # Dashboard Page
 
-![Congratulations](./dashboard.png)
+![Congratulations](./dashboard-page.png)
 
 - [x] - Create mask for whatsapp and date of birth
 - [x] - Create components inputs
