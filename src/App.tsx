@@ -3,15 +3,15 @@
 import { Routes } from './routes';
 import { GlobalStyle } from './styles/global';
 import { BrowserRouter } from 'react-router-dom';
-import { SessionProvider } from './hooks/useSession';
+import { VoucherProvider } from './hooks/useVoucher';
 
 export function App() {
   return (
-    <SessionProvider>
-      <BrowserRouter>
+    <BrowserRouter>
+      <VoucherProvider>
         <Routes />
-        <GlobalStyle />
-      </BrowserRouter>
-    </SessionProvider>
+      </VoucherProvider>
+      <GlobalStyle />
+    </BrowserRouter>
   );
 }

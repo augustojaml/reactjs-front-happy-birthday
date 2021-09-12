@@ -12,7 +12,7 @@ export const AppRoute: React.FC<ReactRouteProps> = ({
   ...rest
 }) => {
   const { user } = useSession();
-  //console.log('Route', user);
+
   return (
     <>
       <Route
@@ -21,9 +21,11 @@ export const AppRoute: React.FC<ReactRouteProps> = ({
           return isPrivate === !!user ? (
             <Component />
           ) : (
-            <Redirect
-              to={{ pathname: isPrivate ? '/admin' : 'admin/dashboard' }}
-            />
+            <>
+              <Redirect
+                to={{ pathname: isPrivate ? '/admin' : '/dashboard' }}
+              />
+            </>
           );
         }}
       />

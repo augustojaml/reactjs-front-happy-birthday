@@ -1,7 +1,9 @@
 - [x] - Create mask for whatsapp and date of birth
 - [x] - Create components inputs
-- [ ] - Validate input captcha
-- [ ] - Get all messages errors in validate and show in form
-- [ ] - Config template email in API
-- [ ] - Send voucher for database and email
-- [ ] - Show page congratulation
+- [x] - Validate input captcha
+- [x] - Get all messages errors in validate and show in form
+- [x] - Check page without content in routes login and dashboard
+- [x] - Config template email in API
+- [x] - Send voucher for database and email
+- [x] - Show page congratulation
+- [ ] - Config loading in button receive voucher

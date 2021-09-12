@@ -3,9 +3,16 @@ import { randomInt } from '../../../utils/helpers';
 
 import { Container } from './styled';
 
-interface InputCaptchaProps extends ButtonHTMLAttributes<HTMLButtonElement> {}
+interface InputCaptchaProps extends ButtonHTMLAttributes<HTMLButtonElement> {
+  name?: string;
+  load?: boolean;
+}
 
-export function InputCaptcha({ ...rest }: InputCaptchaProps) {
+export function InputCaptcha({
+  name = 'Receber voucher',
+  load = false,
+  ...rest
+}: InputCaptchaProps) {
   const [disableButton, setDisableButton] = useState(true);
   const [captcha, setCaptcha] = useState('');
 
@@ -39,7 +46,7 @@ export function InputCaptcha({ ...rest }: InputCaptchaProps) {
           />
         </div>
         <button type='submit' disabled={disableButton} {...rest}>
-          Receber voucher
+          {name} {load && <span className='spinner'></span>}
         </button>
       </Container>
     </>

@@ -40,6 +40,7 @@ export function Form() {
   const history = useHistory();
 
   const { sendVoucher, errors } = useVoucher();
+  const [loading, setLoading] = useState(false);
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -58,6 +59,7 @@ export function Form() {
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
+      setLoading(true);
       const voucher = await sendVoucher({
         name,
         email,
@@ -75,6 +77,7 @@ export function Form() {
           },
         },
       });
+      setLoading(false);
     },
     [
       date_of_birth,
@@ -177,7 +180,11 @@ export function Form() {
                   }
                 />
 
-                <InputCaptcha onClick={handleSubmit} />
+                <InputCaptcha
+                  onClick={handleSubmit}
+                  name={loading ? 'Enviando...' : 'Receber voucher'}
+                  load={loading}
+                />
               </main>
             </form>
           </ContentForm>
