@@ -1,4 +1,5 @@
-- [ ] - Create mask for whatsapp and date of birth
+- [x] - Create mask for whatsapp and date of birth
+- [ ] - Validate input captcha
 - [ ] - Get all messages errors in validate and show in form
 - [ ] - Config template email in API
 - [ ] - Send voucher for database and email

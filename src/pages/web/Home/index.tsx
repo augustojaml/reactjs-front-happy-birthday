@@ -25,7 +25,7 @@ export function Home() {
               <p>
                 No dia do seu aniversário o{' '}
                 <strong className='highlight'>Botequinho do Brawziin</strong>{' '}
-                vai te presentear com um voucher valendo um rodźio de pizza.
+                vai te presentear com um voucher valendo um rodízio de pizza.
               </p>
               <h3>
                 E aí, quer ganhar <br /> um rodźio gratuito?

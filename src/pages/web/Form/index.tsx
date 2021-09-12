@@ -12,6 +12,9 @@ import { Container, ContentForm, ContentInfo, Section } from './styled';
 import LogoImg from '../../../assets/logo.png';
 import { AiFillHome } from 'react-icons/ai';
 import { useVoucher } from '../../../hooks/useVoucher';
+
+import MaskedInput from 'react-maskedinput';
+
 export function Form() {
   const { sendVoucher } = useVoucher();
 
@@ -31,6 +34,7 @@ export function Form() {
         date_of_birth,
         how_did_you_find_us,
       });
+      //console.log(name, email, whatsapp, date_of_birth, how_did_you_find_us);
     },
     [date_of_birth, email, how_did_you_find_us, name, sendVoucher, whatsapp]
   );
@@ -122,9 +126,11 @@ export function Form() {
                       <div className='icon'>
                         <AiOutlineWhatsApp />
                       </div>
-                      <input
+                      <MaskedInput
+                        mask='(11) 11111-1111'
                         type='text'
                         name='whatsapp'
+                        placeholderChar=' '
                         placeholder='WhatsApp'
                         value={whatsapp}
                         onChange={(e) => setWhatsapp(e.target.value)}
@@ -141,8 +147,10 @@ export function Form() {
                       <div className='icon'>
                         <FiCalendar />
                       </div>
-                      <input
+                      <MaskedInput
+                        mask='11/11/1111'
                         type='text'
+                        placeholderChar=' '
                         name='date_of_birth'
                         placeholder='Nasc Date'
                         value={date_of_birth}
