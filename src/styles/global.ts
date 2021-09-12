@@ -46,7 +46,7 @@ export const GlobalStyle = createGlobalStyle`
     cursor: pointer;
     border: 0;
     transition: filter .3s;
-    &:hover {
+    &:not([disabled]):hover {
       filter: brightness(.9)
     }
   }

@@ -1,11 +1,20 @@
-import { createContext, ReactNode, useCallback, useContext } from 'react';
+import {
+  createContext,
+  ReactNode,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 import { api } from '../services/api';
 
 interface VoucherDOMProps {
   children: ReactNode;
 }
+interface ErrorsData {
+  [key: string]: string;
+}
 
-interface voucherForm {
+interface VoucherForm {
   name: string;
   email: string;
   whatsapp: string;
@@ -20,12 +29,15 @@ interface VoucherContextProps {
     whatsapp,
     date_of_birth,
     how_did_you_find_us,
-  }: voucherForm) => void;
+  }: VoucherForm) => Promise<any>;
+  errors: ErrorsData;
 }
 
 const VoucherContext = createContext({} as VoucherContextProps);
 
 export function VoucherProvider({ children }: VoucherDOMProps) {
+  const [errors, setErrors] = useState<ErrorsData>({});
+
   const sendVoucher = useCallback(
     async ({
       name,
@@ -33,21 +45,39 @@ export function VoucherProvider({ children }: VoucherDOMProps) {
       whatsapp,
       date_of_birth,
       how_did_you_find_us,
-    }: voucherForm) => {
-      const response = await api.post('v1/vouchers', {
-        name,
-        email,
-        whatsapp,
-        date_of_birth,
-        how_did_you_find_us,
+    }: VoucherForm) => {
+      return new Promise((resolve, reject) => {
+        api
+          .post('v1/vouchers', {
+            name,
+            email,
+            whatsapp,
+            date_of_birth,
+            how_did_you_find_us,
+          })
+          .then((response) => {
+            setErrors({});
+            resolve(response.data);
+          })
+          .catch(function (error) {
+            if (!error.response) {
+              return;
+            }
+            let err: ErrorsData = {};
+
+            Object.keys(error.response.data.errors).forEach(function (key) {
+              err[key] = error.response.data.errors[key][0];
+            });
+
+            setErrors(err);
+          });
       });
-      console.log(response.data);
     },
     []
   );
 
   return (
-    <VoucherContext.Provider value={{ sendVoucher }}>
+    <VoucherContext.Provider value={{ sendVoucher, errors }}>
       {children}
     </VoucherContext.Provider>
   );

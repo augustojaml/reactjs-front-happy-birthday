@@ -1,4 +1,3 @@
-import React from 'react';
 import { Switch } from 'react-router-dom';
 
 import { Home } from '../pages/web/Home';
@@ -20,7 +19,7 @@ export const Routes = () => {
         <AppRoute path='/congratulations' component={Congratulations} />
       </VoucherProvider>
 
-      <AppRoute path='/admin/' exact component={Login} />
+      <AppRoute path='/admin' exact component={Login} />
       <DashboardProvider>
         <AppRoute
           path='/admin/dashboard'

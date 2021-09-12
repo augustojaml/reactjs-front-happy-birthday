@@ -1,11 +1,5 @@
 import { FormEvent, useCallback, useState } from 'react';
-import {
-  FiCalendar,
-  FiHash,
-  FiInfo,
-  FiMail,
-  FiUserCheck,
-} from 'react-icons/fi';
+import { FiCalendar, FiHash, FiMail, FiUserCheck } from 'react-icons/fi';
 import { AiOutlineWhatsApp } from 'react-icons/ai';
 
 import { Container, ContentForm, ContentInfo, Section } from './styled';
@@ -13,10 +7,39 @@ import LogoImg from '../../../assets/logo.png';
 import { AiFillHome } from 'react-icons/ai';
 import { useVoucher } from '../../../hooks/useVoucher';
 
-import MaskedInput from 'react-maskedinput';
+import { Input } from '../../../components/Input/Index';
+import { InputMask } from '../../../components/Input/InputMask';
+import { InputSelect } from '../../../components/Input/InputSelect';
+import { InputCaptcha } from '../../../components/Input/InputCaptcha';
+import { useHistory } from 'react-router';
+
+const selecteds = [
+  {
+    key: 'facebook',
+    value: 'Facebook',
+  },
+  {
+    key: 'google',
+    value: 'Google',
+  },
+  {
+    key: 'instagram',
+    value: 'Instagram',
+  },
+  {
+    key: 'site',
+    value: 'Site',
+  },
+  {
+    key: 'outros',
+    value: 'Outros',
+  },
+];
 
 export function Form() {
-  const { sendVoucher } = useVoucher();
+  const history = useHistory();
+
+  const { sendVoucher, errors } = useVoucher();
 
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -24,19 +47,44 @@ export function Form() {
   const [date_of_birth, setDate_of_birth] = useState('');
   const [how_did_you_find_us, setHow_did_you_find_us] = useState('');
 
+  function resetForm() {
+    setName('');
+    setEmail('');
+    setWhatsapp('');
+    setDate_of_birth('');
+    setHow_did_you_find_us('');
+  }
+
   const handleSubmit = useCallback(
     async (e: FormEvent<HTMLButtonElement>) => {
       e.preventDefault();
-      sendVoucher({
+      const voucher = await sendVoucher({
         name,
         email,
         whatsapp,
         date_of_birth,
         how_did_you_find_us,
       });
-      //console.log(name, email, whatsapp, date_of_birth, how_did_you_find_us);
+      resetForm();
+      history.push({
+        pathname: 'congratulations',
+        state: {
+          detail: {
+            name: voucher.name,
+            email: voucher.email,
+          },
+        },
+      });
     },
-    [date_of_birth, email, how_did_you_find_us, name, sendVoucher, whatsapp]
+    [
+      date_of_birth,
+      email,
+      history,
+      how_did_you_find_us,
+      name,
+      sendVoucher,
+      whatsapp,
+    ]
   );
 
   return (
@@ -82,124 +130,54 @@ export function Form() {
                 </p>
               </header>
               <main>
-                <div className='input-group'>
-                  <div className='content'>
-                    <div className='icon'>
-                      <FiUserCheck />
-                    </div>
-                    <input
-                      type='text'
-                      name='name'
-                      placeholder='Nome'
-                      value={name}
-                      onChange={(e) => setName(e.target.value)}
-                    />
-                  </div>
-                  <div className='message'>
-                    <FiInfo />
-                    <span>You Error</span>
-                  </div>
-                </div>
+                <Input
+                  icon={FiUserCheck}
+                  placeholder='Nome'
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  message={errors.name && errors.name}
+                />
 
-                <div className='input-group'>
-                  <div className='content'>
-                    <div className='icon'>
-                      <FiMail />
-                    </div>
-                    <input
-                      type='text'
-                      name='email'
-                      placeholder='E-mail'
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                    />
-                  </div>
-                  <div className='message'>
-                    <FiInfo />
-                    <span>You Error</span>
-                  </div>
-                </div>
+                <Input
+                  icon={FiMail}
+                  placeholder='E-mail'
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  message={errors.email && errors.email}
+                />
 
                 <div className='grid-group'>
-                  <div className='input-group'>
-                    <div className='content'>
-                      <div className='icon'>
-                        <AiOutlineWhatsApp />
-                      </div>
-                      <MaskedInput
-                        mask='(11) 11111-1111'
-                        type='text'
-                        name='whatsapp'
-                        placeholderChar=' '
-                        placeholder='WhatsApp'
-                        value={whatsapp}
-                        onChange={(e) => setWhatsapp(e.target.value)}
-                      />
-                    </div>
-                    <div className='message'>
-                      <FiInfo />
-                      <span>You Error</span>
-                    </div>
-                  </div>
+                  <InputMask
+                    icon={AiOutlineWhatsApp}
+                    mask='(11) 11111-1111'
+                    placeholder='WhatsApp'
+                    value={whatsapp}
+                    onChange={(e) => setWhatsapp(e.target.value)}
+                    message={errors.whatsapp && errors.whatsapp}
+                  />
 
-                  <div className='input-group'>
-                    <div className='content'>
-                      <div className='icon'>
-                        <FiCalendar />
-                      </div>
-                      <MaskedInput
-                        mask='11/11/1111'
-                        type='text'
-                        placeholderChar=' '
-                        name='date_of_birth'
-                        placeholder='Nasc Date'
-                        value={date_of_birth}
-                        onChange={(e) => setDate_of_birth(e.target.value)}
-                      />
-                    </div>
-                    <div className='message'>
-                      <FiInfo />
-                      <span>You Error</span>
-                    </div>
-                  </div>
+                  <InputMask
+                    icon={FiCalendar}
+                    mask='11/11/1111'
+                    placeholder='Nasc Date'
+                    value={date_of_birth}
+                    onChange={(e) => setDate_of_birth(e.target.value)}
+                    message={errors.date_of_birth && errors.date_of_birth}
+                  />
                 </div>
 
-                <div className='input-group'>
-                  <div className='content'>
-                    <div className='icon'>
-                      <FiHash />
-                    </div>
-                    <select
-                      name='how_did_you_find_us'
-                      id='cars'
-                      value={how_did_you_find_us}
-                      onChange={(e) => setHow_did_you_find_us(e.target.value)}
-                    >
-                      <option value=''>Como nos conheceu</option>
-                      <option value='facebook'>Facebook</option>
-                      <option value='google'>Google</option>
-                      <option value='instagram'>Instagram</option>
-                      <option value='site'>Site</option>
-                      <option value='outros'>Outros</option>
-                    </select>
-                  </div>
-                  <div className='message'>
-                    <FiInfo />
-                    <span>You Error</span>
-                  </div>
-                </div>
+                <InputSelect
+                  icon={FiHash}
+                  name='how_did_you_find_us'
+                  value={how_did_you_find_us}
+                  onChange={(e) => setHow_did_you_find_us(e.target.value)}
+                  selecteds={selecteds}
+                  message={
+                    errors.how_did_you_find_us && errors.how_did_you_find_us
+                  }
+                />
 
-                <div className='input-captcha'>
-                  <div className='content'>
-                    <span>
-                      Quanto é <strong>4</strong> + <strong>5</strong> :
-                    </span>
-                    <input type='text' />
-                  </div>
-                  <button type='submit' onClick={handleSubmit}>
-                    Receber voucher
-                  </button>
-                </div>
+                <InputCaptcha onClick={handleSubmit} />
               </main>
             </form>
           </ContentForm>
