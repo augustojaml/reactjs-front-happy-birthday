@@ -90,7 +90,10 @@ export function Dashboard() {
                             <strong>{voucher.name}</strong>
                           </td>
                           <td>{voucher.date_of_birth}</td>
-                          <td>{voucher.voucher}</td>
+                          <td>
+                            Solicitou {voucher.voucher} vez
+                            {Number(voucher.voucher) > 1 ? 'es' : ''}
+                          </td>
                         </tr>
                       ))}
                     </tbody>

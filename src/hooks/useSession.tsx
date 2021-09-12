@@ -53,7 +53,6 @@ export function SessionProvider({ children }: SessionContextProps) {
         api.defaults.headers.authorization = `Bearer ${token}`;
         localStorage.setItem('@Birthday:token', token);
         localStorage.setItem('@Birthday:user', JSON.stringify(user));
-
         setSession({
           user: user,
           token: token,
