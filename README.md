@@ -22,6 +22,10 @@ application in ReacJS using the API [Laravel Happy Birthday](https://github.com/
 
 ![Congratulations](./dashboard-page.png)
 
+# Email
+
+![Congratulations](./email.png)
+
 - [x] - Create mask for whatsapp and date of birth
 - [x] - Create components inputs
 - [x] - Validate input captcha
